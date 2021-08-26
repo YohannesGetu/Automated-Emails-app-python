@@ -43,5 +43,5 @@ class NewsFeed:
 
 
 if __name__ == "__main__":
-    news_feed = NewsFeed(interest="nasa",from_date='2021-8-24', to_date='2021-8-24', language='en')
+    news_feed = NewsFeed(interest="nasa", from_date='2021-8-24', to_date='2021-8-24', language='en')
     print(news_feed.get())
