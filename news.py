@@ -2,6 +2,13 @@
 import requests
 
 
+def _get_articles(url):
+    response = requests.get(url)
+    content = response.json()
+    articles = content["articles"]
+    return articles
+
+
 class NewsFeed:
     """representing multiple news titles and links as a single string
     """
@@ -15,21 +22,24 @@ class NewsFeed:
         self.language = language
 
     def get(self):
-        url = f"{self.base_url}" \
-              f"qInTitle={self.interest}&" \
-              f"from={self.from_date}&" \
-              f"to={self.to_date}&" \
-              f"language={self.language}&" \
-              f"apiKey={self.api_key}"
-        response = requests.get(url)
-        content = response.json()
-        articles = content["articles"]
+        url = self._build_url()
+
+        articles = _get_articles(url)
 
         email_body = ''
         for article in articles:
             email_body += article['title'] + "\n" + article['url'] + "\n\n"
 
         return email_body
+
+    def _build_url(self):
+        url = f"{self.base_url}" \
+              f"qInTitle={self.interest}&" \
+              f"from={self.from_date}&" \
+              f"to={self.to_date}&" \
+              f"language={self.language}&" \
+              f"apiKey={self.api_key}"
+        return url
 
 
 if __name__ == "__main__":
